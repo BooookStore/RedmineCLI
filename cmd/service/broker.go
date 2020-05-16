@@ -1,9 +1,9 @@
 package service
 
 import (
-	"fmt"
 	"log"
 	"net/url"
+	"strconv"
 )
 
 const (
@@ -21,9 +21,14 @@ func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(id)
+
+	query := url.URL{}
+	values := query.Query()
+	values.Add("project_id", strconv.Itoa(id))
+	query.RawQuery = values.Encode()
+
 	var result IssuesResponse
-	err = b.Client.Get(issuesPath, &result)
+	err = b.Client.Get(issuesPath+query.String(), &result)
 	return &result, err
 }
 
