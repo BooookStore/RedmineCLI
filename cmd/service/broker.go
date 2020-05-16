@@ -33,9 +33,10 @@ func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
 		values := url.Values{}
 		values.Add("project_id", strconv.Itoa(projectId))
 		values.Add("fix_version_id", strconv.Itoa(versionId))
-		q := url.URL{}
-		q.Path = issuesPath
-		q.RawQuery = values.Encode()
+		q := url.URL{
+			Path:     issuesPath,
+			RawQuery: values.Encode(),
+		}
 		return q.String()
 	}
 
