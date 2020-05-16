@@ -9,8 +9,8 @@ type Broker struct {
 	Client Client
 }
 
-func (b *Broker) GetIssues() (*Issues, error) {
-	var result Issues
+func (b *Broker) GetIssues() (*IssuesResponse, error) {
+	var result IssuesResponse
 	err := b.Client.Get(issuesPath, &result)
 	return &result, err
 }
