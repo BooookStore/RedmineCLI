@@ -50,3 +50,20 @@ type IssuesResponse struct {
 	Offset     int `json:"offset"`
 	Limit      int `json:"limit"`
 }
+
+type ProjectsResponse struct {
+	Projects []struct {
+		ID             int       `json:"id"`
+		Name           string    `json:"name"`
+		Identifier     string    `json:"identifier"`
+		Description    string    `json:"description"`
+		Status         int       `json:"status"`
+		IsPublic       bool      `json:"is_public"`
+		InheritMembers bool      `json:"inherit_members"`
+		CreatedOn      time.Time `json:"created_on"`
+		UpdatedOn      time.Time `json:"updated_on"`
+	} `json:"projects"`
+	TotalCount int `json:"total_count"`
+	Offset     int `json:"offset"`
+	Limit      int `json:"limit"`
+}
