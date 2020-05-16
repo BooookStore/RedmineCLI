@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 	"strconv"
 	"strings"
@@ -48,7 +47,7 @@ func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
 func (b *Broker) findProjectId(projectName string) (int, error) {
 	var result ProjectsResponse
 	if err := b.Client.Get(projectsPath, &result); err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
 	return result.findProjectId(projectName)
 }
