@@ -7,10 +7,6 @@ import (
 	"net/url"
 )
 
-type Client interface {
-	Get(string, interface{}) error
-}
-
 type RESTClient struct {
 	redmineURL *url.URL
 	apiKey     string
