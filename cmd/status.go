@@ -32,7 +32,7 @@ var statusCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 		broker := service.Broker{Client: client}
-		issues, err := broker.GetIssues()
+		issues, err := broker.GetIssues(args[0])
 		if err != nil {
 			log.Fatal(err)
 		}

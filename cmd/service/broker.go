@@ -15,8 +15,8 @@ type Broker struct {
 	Client Client
 }
 
-func (b *Broker) GetIssues() (*IssuesResponse, error) {
-	id, err := b.findProjectId("SampleProject")
+func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
+	id, err := b.findProjectId(projectName)
 	if err != nil {
 		return nil, err
 	}
