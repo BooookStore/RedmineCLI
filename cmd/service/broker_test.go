@@ -60,7 +60,7 @@ func TestBroker_GetIssues(t *testing.T) {
 	b := &Broker{mockRESTClient}
 
 	// execute
-	issues, err := b.GetIssues("SampleProject")
+	issues, err := b.GetIssues("SampleProject", "SampleVersion1")
 
 	// verify
 	assert.Nil(t, err)
