@@ -8,7 +8,7 @@ import (
 )
 
 type Client interface {
-	Get(string, *interface{}) error
+	Get(string, interface{}) error
 }
 
 type RESTClient struct {
@@ -25,7 +25,7 @@ func NewClient(redmineURL string, apiKey string, hclient *http.Client) (*RESTCli
 	return &RESTClient{u, apiKey, hclient}, nil
 }
 
-func (c *RESTClient) Get(path string, result *interface{}) error {
+func (c *RESTClient) Get(path string, result interface{}) error {
 	req, err := c.newRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return err
