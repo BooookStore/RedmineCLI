@@ -17,18 +17,22 @@ type Broker struct {
 }
 
 func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
-	id, err := b.findProjectId(projectName)
+	projectId, err := b.findProjectId(projectName)
 	if err != nil {
 		return nil, err
 	}
 
-	query := url.URL{}
-	values := query.Query()
-	values.Add("project_id", strconv.Itoa(id))
-	query.RawQuery = values.Encode()
+	path := func(id int) string {
+		values := url.Values{}
+		values.Add("project_id", strconv.Itoa(id))
+		q := url.URL{}
+		q.Path = issuesPath
+		q.RawQuery = values.Encode()
+		return q.String()
+	}
 
 	var result IssuesResponse
-	err = b.Client.Get(issuesPath+query.String(), &result)
+	err = b.Client.Get(path(projectId), &result)
 	return &result, err
 }
 
