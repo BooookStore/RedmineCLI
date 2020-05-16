@@ -39,6 +39,10 @@ func (c *RESTClient) Get(path string, result interface{}) error {
 	return nil
 }
 
+func (c *RESTClient) Url() url.URL {
+	return *c.redmineURL
+}
+
 func (c *RESTClient) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
 	fullPath, err := c.redmineURL.Parse(path)
 	if err != nil {
