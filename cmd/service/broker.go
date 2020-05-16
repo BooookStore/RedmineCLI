@@ -1,14 +1,17 @@
 package service
 
 import (
+	"fmt"
 	"log"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 const (
 	issuesPath   = "issues.json"
 	projectsPath = "projects.json"
+	versionsPath = "projects/%s/versions.json"
 )
 
 // Broker is mediate between cli and redmine api
@@ -21,10 +24,15 @@ func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	versionId, err := b.findVersionId(projectName, "SampleVersion1")
+	if err != nil {
+		return nil, err
+	}
 
-	path := func(id int) string {
+	path := func() string {
 		values := url.Values{}
-		values.Add("project_id", strconv.Itoa(id))
+		values.Add("project_id", strconv.Itoa(projectId))
+		values.Add("fix_version_id", strconv.Itoa(versionId))
 		q := url.URL{}
 		q.Path = issuesPath
 		q.RawQuery = values.Encode()
@@ -32,7 +40,7 @@ func (b *Broker) GetIssues(projectName string) (*IssuesResponse, error) {
 	}
 
 	var result IssuesResponse
-	err = b.Client.Get(path(projectId), &result)
+	err = b.Client.Get(path(), &result)
 	return &result, err
 }
 
@@ -42,6 +50,14 @@ func (b *Broker) findProjectId(projectName string) (int, error) {
 		log.Fatal(err)
 	}
 	return result.findProjectId(projectName)
+}
+
+func (b *Broker) findVersionId(projectName string, versionName string) (int, error) {
+	var result VersionsResponse
+	if err := b.Client.Get(fmt.Sprintf(versionsPath, strings.ToLower(projectName)), &result); err != nil {
+		return 0, err
+	}
+	return result.findVersionId(versionName)
 }
 
 // Client is redmine client used by Broker

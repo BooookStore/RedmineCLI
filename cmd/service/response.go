@@ -80,3 +80,31 @@ func (r ProjectsResponse) findProjectId(projectName string) (int, error) {
 	}
 	return 0, errors.New(fmt.Sprintf("Not found project id by project name [%s]", projectName))
 }
+
+type VersionsResponse struct {
+	Versions []struct {
+		ID      int `json:"id"`
+		Project struct {
+			ID   int    `json:"id"`
+			Name string `json:"name"`
+		} `json:"project"`
+		Name          string      `json:"name"`
+		Description   string      `json:"description"`
+		Status        string      `json:"status"`
+		DueDate       interface{} `json:"due_date"`
+		Sharing       string      `json:"sharing"`
+		WikiPageTitle string      `json:"wiki_page_title"`
+		CreatedOn     time.Time   `json:"created_on"`
+		UpdatedOn     time.Time   `json:"updated_on"`
+	} `json:"versions"`
+	TotalCount int `json:"total_count"`
+}
+
+func (r VersionsResponse) findVersionId(versionName string) (int, error) {
+	for _, v := range r.Versions {
+		if v.Name == versionName {
+			return v.ID, nil
+		}
+	}
+	return 0, errors.New(fmt.Sprintf("Not found version id by version name [%s]", versionName))
+}
