@@ -15,6 +15,7 @@ func (b *Broker) GetIssues() (*IssuesResponse, error) {
 	return &result, err
 }
 
+// Client is redmine client used by Broker
 type Client interface {
 	Get(string, interface{}) error
 }
