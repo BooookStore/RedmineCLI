@@ -7,21 +7,25 @@ import (
 	"net/url"
 )
 
-type Client struct {
+type Client interface {
+	Get(string, *interface{}) error
+}
+
+type RESTClient struct {
 	redmineURL *url.URL
 	apiKey     string
 	hclient    *http.Client
 }
 
-func NewClient(redmineURL string, apiKey string, hclient *http.Client) (*Client, error) {
+func NewClient(redmineURL string, apiKey string, hclient *http.Client) (*RESTClient, error) {
 	u, err := url.Parse(redmineURL)
 	if err != nil {
 		return nil, err
 	}
-	return &Client{u, apiKey, hclient}, nil
+	return &RESTClient{u, apiKey, hclient}, nil
 }
 
-func (c *Client) Get(path string, result *interface{}) error {
+func (c *RESTClient) Get(path string, result *interface{}) error {
 	req, err := c.newRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return err
@@ -39,7 +43,7 @@ func (c *Client) Get(path string, result *interface{}) error {
 	return nil
 }
 
-func (c *Client) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
+func (c *RESTClient) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
 	fullPath, err := c.redmineURL.Parse(path)
 	if err != nil {
 		return nil, err
