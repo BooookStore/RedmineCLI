@@ -9,11 +9,20 @@ import (
 )
 
 func TestClient_Get(t *testing.T) {
+	const (
+		Url    = "http://redmine.test.com"
+		Path   = "/issues.json"
+		ApiKey = "api_key_value"
+	)
+
 	// setup testClient
 	const body = `{ "id": 1, "project": { "id": 1, "name": "SampleProject" } }`
 	testClient := NewTestClient(func(req *http.Request) *http.Response {
-		assert.Equal(t, "http://redmine.test.com/issues.json", req.URL.String())
-		assert.Equal(t, "api_key_value", req.Header.Get("X-Redmine-API-Key"))
+
+		// verify accessed full path, api key
+		assert.Equal(t, Url+Path, req.URL.String())
+		assert.Equal(t, ApiKey, req.Header.Get("X-Redmine-API-Key"))
+
 		return &http.Response{
 			StatusCode: 200,
 			Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
@@ -22,12 +31,12 @@ func TestClient_Get(t *testing.T) {
 	})
 
 	// setup client
-	client, err := NewClient("http://redmine.test.com", "api_key_value", testClient)
+	client, err := NewClient(Url, ApiKey, testClient)
 	assert.Nil(t, err)
 
 	// execute
 	var result interface{}
-	err = client.Get("/issues.json", &result)
+	err = client.Get(Path, &result)
 
 	// verify
 	assert.Nil(t, err)
