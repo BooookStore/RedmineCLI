@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"testing"
 )
 
@@ -31,12 +32,12 @@ func TestClient_Get(t *testing.T) {
 	})
 
 	// setup client
-	client, err := NewClient(Url, ApiKey, testClient)
-	assert.Nil(t, err)
+	u, _ := url.Parse(Url)
+	client := RESTClient{u, ApiKey, testClient}
 
 	// execute
 	var result interface{}
-	err = client.Get(Path, &result)
+	err := client.Get(Path, &result)
 
 	// verify
 	assert.Nil(t, err)

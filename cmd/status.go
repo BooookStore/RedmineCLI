@@ -20,7 +20,6 @@ import (
 	"github.com/BooookStore/RedmineCLI/cmd/service"
 	"github.com/spf13/cobra"
 	"log"
-	"net/http"
 )
 
 // statusCmd represents the status command
@@ -28,7 +27,7 @@ var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Show story and tasks",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1", http.DefaultClient)
+		client, err := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1")
 		if err != nil {
 			log.Fatal(err)
 		}
