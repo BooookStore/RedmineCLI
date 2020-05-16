@@ -3,7 +3,11 @@
 
 package service
 
-import "time"
+import (
+	"errors"
+	"fmt"
+	"time"
+)
 
 type IssuesResponse struct {
 	Issues []struct {
@@ -66,4 +70,13 @@ type ProjectsResponse struct {
 	TotalCount int `json:"total_count"`
 	Offset     int `json:"offset"`
 	Limit      int `json:"limit"`
+}
+
+func (r ProjectsResponse) findProjectId(projectName string) (int, error) {
+	for _, v := range r.Projects {
+		if v.Name == projectName {
+			return v.ID, nil
+		}
+	}
+	return 0, errors.New(fmt.Sprintf("Not found project id by project name [%s]", projectName))
 }
