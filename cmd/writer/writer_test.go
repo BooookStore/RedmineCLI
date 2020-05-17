@@ -5,6 +5,7 @@ import (
 	"github.com/BooookStore/RedmineCLI/cmd/service"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"strings"
 	"testing"
 )
 
@@ -28,7 +29,8 @@ func TestPrintStories(t *testing.T) {
 	// verify
 	assert.Nil(t, err)
 	output, _ := ioutil.ReadAll(stdout)
-	assert.Equal(t, `1	FirstIssue
-2	SecondIssue
-`, string(output))
+	assert.True(t, strings.Contains(string(output), "1"))
+	assert.True(t, strings.Contains(string(output), "FirstIssue"))
+	assert.True(t, strings.Contains(string(output), "2"))
+	assert.True(t, strings.Contains(string(output), "SecondIssue"))
 }
