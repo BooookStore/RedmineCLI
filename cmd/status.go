@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"github.com/BooookStore/RedmineCLI/cmd/service"
+	"github.com/BooookStore/RedmineCLI/cmd/writer"
 	"github.com/spf13/cobra"
 )
 
@@ -30,8 +31,15 @@ var statusCmd = &cobra.Command{
 		issues, err := broker.GetIssues(args[0], args[1])
 		if err != nil {
 			cmd.PrintErr(err)
+			return
 		}
-		cmd.Println(issues)
+
+		w := &writer.Writer{Out: cmd.OutOrStdout()}
+		err = w.PrintStories(issues.Issues...)
+		if err != nil {
+			cmd.PrintErr(err)
+			return
+		}
 	},
 }
 

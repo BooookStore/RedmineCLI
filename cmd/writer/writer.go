@@ -11,7 +11,7 @@ type Writer struct {
 	Out io.Writer
 }
 
-func (w *Writer) printStories(issue ...service.Issue) error {
+func (w *Writer) PrintStories(issue ...service.Issue) error {
 	bw := bufio.NewWriter(w.Out)
 	for _, v := range issue {
 		_, err := bw.WriteString(fmt.Sprintf("%v\t%s\n", v.ID, v.Subject))
