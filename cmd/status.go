@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
 	"github.com/BooookStore/RedmineCLI/cmd/service"
 	"github.com/spf13/cobra"
 )
@@ -32,7 +31,7 @@ var statusCmd = &cobra.Command{
 		if err != nil {
 			cmd.PrintErr(err)
 		}
-		fmt.Println(issues)
+		cmd.Println(issues)
 	},
 }
 
