@@ -26,10 +26,7 @@ var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Show story and tasks",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1")
-		if err != nil {
-			cmd.PrintErr(err)
-		}
+		client := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1")
 		broker := service.Broker{Client: client}
 		issues, err := broker.GetIssues(args[0], args[1])
 		if err != nil {

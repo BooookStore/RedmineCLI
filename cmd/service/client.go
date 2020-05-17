@@ -13,9 +13,8 @@ type RESTClient struct {
 	hclient    *http.Client
 }
 
-// TODO remove error return
-func NewClient(redmineURL string, apiKey string) (*RESTClient, error) {
-	return &RESTClient{redmineURL, apiKey, http.DefaultClient}, nil
+func NewClient(redmineURL string, apiKey string) *RESTClient {
+	return &RESTClient{redmineURL, apiKey, http.DefaultClient}
 }
 
 func (c *RESTClient) Get(path string, result interface{}) error {
