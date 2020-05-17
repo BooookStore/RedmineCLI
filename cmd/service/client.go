@@ -8,17 +8,14 @@ import (
 )
 
 type RESTClient struct {
-	redmineURL *url.URL
+	redmineURL string
 	apiKey     string
 	hclient    *http.Client
 }
 
+// TODO remove error return
 func NewClient(redmineURL string, apiKey string) (*RESTClient, error) {
-	u, err := url.Parse(redmineURL)
-	if err != nil {
-		return nil, err
-	}
-	return &RESTClient{u, apiKey, http.DefaultClient}, nil
+	return &RESTClient{redmineURL, apiKey, http.DefaultClient}, nil
 }
 
 func (c *RESTClient) Get(path string, result interface{}) error {
@@ -39,16 +36,16 @@ func (c *RESTClient) Get(path string, result interface{}) error {
 	return nil
 }
 
-func (c *RESTClient) Url() url.URL {
-	return *c.redmineURL
-}
-
 func (c *RESTClient) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
-	fullPath, err := c.redmineURL.Parse(path)
+	u, err := url.Parse(c.redmineURL)
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest(method, fullPath.String(), body)
+	u, err = u.Parse(path)
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequest(method, u.String(), body)
 	if err != nil {
 		return nil, nil
 	}

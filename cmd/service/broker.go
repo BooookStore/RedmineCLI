@@ -63,5 +63,4 @@ func (b *Broker) findVersionId(projectName string, versionName string) (int, err
 // Client is redmine client used by Broker
 type Client interface {
 	Get(string, interface{}) error
-	Url() url.URL
 }

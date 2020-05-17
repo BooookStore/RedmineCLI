@@ -5,7 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"testing"
 )
 
@@ -32,8 +31,7 @@ func TestClient_Get(t *testing.T) {
 	})
 
 	// setup client
-	u, _ := url.Parse(Url)
-	client := RESTClient{u, ApiKey, testClient}
+	client := RESTClient{Url, ApiKey, testClient}
 
 	// execute
 	var result interface{}

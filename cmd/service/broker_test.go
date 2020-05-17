@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"testing"
 )
 
@@ -53,8 +52,7 @@ func TestBroker_GetIssues(t *testing.T) {
 		return nil
 	})
 
-	u, _ := url.Parse("http://redmine.test.com")
-	mockRESTClient := &RESTClient{u, "abcdefg", testClient}
+	mockRESTClient := &RESTClient{"http://redmine.test.com", "abcdefg", testClient}
 
 	// setup
 	b := &Broker{mockRESTClient}
