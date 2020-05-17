@@ -38,6 +38,10 @@ type Issue struct {
 		ID   int    `json:"id"`
 		Name string `json:"name"`
 	} `json:"author"`
+	AssignedTo struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	} `json:"assigned_to"`
 	Category struct {
 		ID   int    `json:"id"`
 		Name string `json:"name"`
