@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"github.com/BooookStore/RedmineCLI/cmd/service"
 	"github.com/spf13/cobra"
-	"log"
 )
 
 // statusCmd represents the status command
@@ -29,12 +28,12 @@ var statusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		client, err := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1")
 		if err != nil {
-			log.Fatal(err)
+			cmd.PrintErr(err)
 		}
 		broker := service.Broker{Client: client}
 		issues, err := broker.GetIssues(args[0], args[1])
 		if err != nil {
-			log.Fatal(err)
+			cmd.PrintErr(err)
 		}
 		fmt.Println(issues)
 	},
