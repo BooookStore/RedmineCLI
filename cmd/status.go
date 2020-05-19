@@ -17,7 +17,7 @@ var statusCmd = &cobra.Command{
 		projectName := viper.GetString("project")
 		storyName := viper.GetString("story")
 
-		client := service.NewClient("http://localhost:8080", "290046cc011a116826e9ce2c54705b58ba98aba1")
+		client := service.NewClient(viper.GetString("redmine-url"), viper.GetString("redmine-api-key"))
 		broker := service.Broker{Client: client}
 		issues, err := broker.GetIssues(projectName, storyName)
 		if err != nil {
