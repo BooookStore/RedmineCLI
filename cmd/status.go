@@ -8,18 +8,14 @@ import (
 	"os"
 )
 
-// statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Show story and tasks",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		projectName := viper.GetString("project")
-		storyName := viper.GetString("story")
-
 		client := service.NewClient(viper.GetString("redmine-url"), viper.GetString("redmine-api-key"))
 		broker := service.Broker{Client: client}
-		issues, err := broker.GetIssues(projectName, storyName)
+		issues, err := broker.GetIssues(viper.GetString("project"), viper.GetString("story"))
 		if err != nil {
 			cmd.PrintErr(err)
 			return
