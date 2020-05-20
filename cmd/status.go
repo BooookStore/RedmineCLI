@@ -15,7 +15,9 @@ var statusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		client := service.NewClient(viper.GetString("redmine-url"), viper.GetString("redmine-api-key"))
 		broker := service.Broker{Client: client}
-		issues, err := broker.GetIssues(viper.GetString("project"), viper.GetString("sprint"))
+
+		// create query
+		issues, err := broker.GetIssues(viper.GetString("project"), viper.GetString("sprint"), createQuery(cmd))
 		if err != nil {
 			cmd.PrintErr(err)
 			return
@@ -34,6 +36,7 @@ func init() {
 	rootCmd.AddCommand(statusCmd)
 	statusCmd.Flags().StringP("project", "p", "", "project name")
 	statusCmd.Flags().StringP("sprint", "s", "", "sprint name")
+	statusCmd.Flags().IntP("inspect", "i", -1, "issue id")
 	err := viper.BindPFlag("project", statusCmd.Flags().Lookup("project"))
 	err = viper.BindPFlag("sprint", statusCmd.Flags().Lookup("sprint"))
 
@@ -41,4 +44,12 @@ func init() {
 		statusCmd.PrintErr(err)
 		os.Exit(1)
 	}
+}
+
+func createQuery(cmd *cobra.Command) service.GetIssuesQuery {
+	query := service.GetIssuesQuery{}
+	if value, _ := cmd.Flags().GetInt("inspect"); value != -1 {
+		query.IssueId = &value
+	}
+	return query
 }

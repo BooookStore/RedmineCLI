@@ -18,7 +18,7 @@ type Broker struct {
 	Client Client
 }
 
-func (b *Broker) GetIssues(projectName string, versionName string) (*IssuesResponse, error) {
+func (b *Broker) GetIssues(projectName string, versionName string, query GetIssuesQuery) (*IssuesResponse, error) {
 	projectId, err := b.findProjectId(projectName)
 	if err != nil {
 		return nil, err
@@ -32,6 +32,11 @@ func (b *Broker) GetIssues(projectName string, versionName string) (*IssuesRespo
 		values := url.Values{}
 		values.Add("project_id", strconv.Itoa(projectId))
 		values.Add("fix_version_id", strconv.Itoa(versionId))
+
+		if query.IssueId != nil {
+			values.Add("issue_id", strconv.Itoa(*query.IssueId))
+		}
+
 		q := url.URL{
 			Path:     issuesPath,
 			RawQuery: values.Encode(),
@@ -58,6 +63,10 @@ func (b *Broker) findVersionId(projectName string, versionName string) (int, err
 		return 0, err
 	}
 	return result.findVersionId(versionName)
+}
+
+type GetIssuesQuery struct {
+	IssueId *int
 }
 
 // Client is redmine client used by Broker
