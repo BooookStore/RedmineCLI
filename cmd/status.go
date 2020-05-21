@@ -16,7 +16,7 @@ var statusCmd = &cobra.Command{
 		broker := &service.Broker{Client: client}
 		writer := &service.Writer{Out: cmd.OutOrStdout()}
 
-		err := service.WriteIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
+		err := service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
 		if err != nil {
 			cmd.PrintErr(err)
 			return

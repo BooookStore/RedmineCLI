@@ -1,6 +1,6 @@
 package service
 
-func WriteIssues(broker *Broker, writer *Writer, projectName string, sprintName string) error {
+func PrintIssues(broker *Broker, writer *Writer, projectName string, sprintName string) error {
 	issues, err := broker.GetIssues(
 		projectName,
 		sprintName,
