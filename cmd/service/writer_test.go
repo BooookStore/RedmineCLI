@@ -1,8 +1,7 @@
-package writer
+package service
 
 import (
 	"bytes"
-	"github.com/BooookStore/RedmineCLI/cmd/service"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
@@ -16,11 +15,11 @@ func TestPrintStories(t *testing.T) {
 
 	// execute
 	err := writer.PrintStories(
-		service.Issue{
+		Issue{
 			ID:      1,
 			Subject: "FirstIssue",
 		},
-		service.Issue{
+		Issue{
 			ID:      2,
 			Subject: "SecondIssue",
 		},
