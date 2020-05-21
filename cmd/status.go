@@ -16,10 +16,24 @@ var statusCmd = &cobra.Command{
 		broker := &service.Broker{Client: client}
 		writer := &service.Writer{Out: cmd.OutOrStdout()}
 
-		err := service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
+		inspectIssueId, err := cmd.Flags().GetInt("inspect")
 		if err != nil {
 			cmd.PrintErr(err)
 			return
+		}
+
+		if inspectIssueId != -1 {
+			err = service.PrintIssue(broker, writer, viper.GetString("project"), viper.GetString("sprint"), inspectIssueId)
+			if err != nil {
+				cmd.PrintErr(err)
+				return
+			}
+		} else {
+			err = service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
+			if err != nil {
+				cmd.PrintErr(err)
+				return
+			}
 		}
 	},
 }
@@ -36,12 +50,4 @@ func init() {
 		statusCmd.PrintErr(err)
 		os.Exit(1)
 	}
-}
-
-func createQuery(cmd *cobra.Command) service.GetIssuesQuery {
-	query := service.GetIssuesQuery{}
-	if value, _ := cmd.Flags().GetInt("inspect"); value != -1 {
-		query.IssueId = &value
-	}
-	return query
 }

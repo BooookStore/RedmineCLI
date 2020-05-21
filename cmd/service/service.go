@@ -15,3 +15,19 @@ func PrintIssues(broker *Broker, writer *Writer, projectName string, sprintName 
 	}
 	return nil
 }
+
+func PrintIssue(broker *Broker, writer *Writer, projectName string, sprintName string, issueId int) error {
+	issues, err := broker.GetIssues(
+		projectName,
+		sprintName,
+		GetIssuesQuery{IssueId: &issueId},
+	)
+	if err != nil {
+		return err
+	}
+	err = writer.PrintStories(issues.Issues...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
