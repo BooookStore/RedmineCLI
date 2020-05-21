@@ -24,16 +24,11 @@ var statusCmd = &cobra.Command{
 
 		if inspectIssueId != -1 {
 			err = service.PrintIssue(broker, writer, viper.GetString("project"), viper.GetString("sprint"), inspectIssueId)
-			if err != nil {
-				cmd.PrintErr(err)
-				return
-			}
 		} else {
 			err = service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
-			if err != nil {
-				cmd.PrintErr(err)
-				return
-			}
+		}
+		if err != nil {
+			cmd.PrintErr(err)
 		}
 	},
 }
