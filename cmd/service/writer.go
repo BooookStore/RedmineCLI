@@ -25,10 +25,10 @@ func (w *Writer) PrintIssues(issue ...Issue) error {
 }
 
 func (w *Writer) PrintIssue(issue Issue) error {
-	section1 := uitable.New()
-	section1.AddRow("ID", "SUBJECT", "STATUS", "ASSIGNED")
-	section1.AddRow(issue.ID, issue.Subject, issue.Status.Name, issue.AssignedTo.Name)
-	_, err := w.Out.Write([]byte(section1.String()))
+	header := uitable.New()
+	header.AddRow("ID", "SUBJECT", "STATUS", "ASSIGNED")
+	header.AddRow(issue.ID, issue.Subject, issue.Status.Name, issue.AssignedTo.Name)
+	_, err := w.Out.Write([]byte(header.String()))
 	if err != nil {
 		return err
 	}
