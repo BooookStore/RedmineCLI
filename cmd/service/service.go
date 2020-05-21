@@ -1,5 +1,10 @@
 package service
 
+import (
+	"errors"
+	"strconv"
+)
+
 func PrintIssues(broker *Broker, writer *Writer, projectName string, sprintName string) error {
 	issues, err := broker.GetIssues(
 		projectName,
@@ -25,7 +30,10 @@ func PrintIssue(broker *Broker, writer *Writer, projectName string, sprintName s
 	if err != nil {
 		return err
 	}
-	err = writer.PrintIssues(issues.Issues...)
+	if len(issues.Issues) == 0 {
+		return errors.New("not found issue from issue id " + strconv.Itoa(issueId))
+	}
+	err = writer.PrintIssue(issues.Issues[0])
 	if err != nil {
 		return err
 	}
