@@ -16,14 +16,14 @@ var statusCmd = &cobra.Command{
 		broker := &service.Broker{Client: client}
 		writer := &service.Writer{Out: cmd.OutOrStdout()}
 
-		inspectIssueId, err := cmd.Flags().GetInt("inspect")
+		issueId, err := cmd.Flags().GetInt("inspect")
 		if err != nil {
 			cmd.PrintErr(err)
 			return
 		}
 
-		if inspectIssueId != -1 {
-			err = service.PrintIssue(broker, writer, viper.GetString("project"), viper.GetString("sprint"), inspectIssueId)
+		if issueId != -1 {
+			err = service.PrintIssue(broker, writer, viper.GetString("project"), viper.GetString("sprint"), issueId)
 		} else {
 			err = service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
 		}
