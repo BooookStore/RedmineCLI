@@ -9,7 +9,7 @@ func PrintIssues(broker *Broker, writer *Writer, projectName string, sprintName 
 	if err != nil {
 		return err
 	}
-	err = writer.PrintStories(issues.Issues...)
+	err = writer.PrintIssues(issues.Issues...)
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func PrintIssue(broker *Broker, writer *Writer, projectName string, sprintName s
 	if err != nil {
 		return err
 	}
-	err = writer.PrintStories(issues.Issues...)
+	err = writer.PrintIssues(issues.Issues...)
 	if err != nil {
 		return err
 	}

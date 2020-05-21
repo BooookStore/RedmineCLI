@@ -14,7 +14,7 @@ func TestPrintStories(t *testing.T) {
 	writer := Writer{Out: stdout}
 
 	// execute
-	err := writer.PrintStories(
+	err := writer.PrintIssues(
 		Issue{
 			ID:      1,
 			Subject: "FirstIssue",

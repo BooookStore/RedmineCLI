@@ -9,7 +9,7 @@ type Writer struct {
 	Out io.Writer
 }
 
-func (w *Writer) PrintStories(issue ...Issue) error {
+func (w *Writer) PrintIssues(issue ...Issue) error {
 	table := uitable.New()
 	table.MaxColWidth = 50
 	table.AddRow("ID", "SUBJECT", "ASSIGNED")
