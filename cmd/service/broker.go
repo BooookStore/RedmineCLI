@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	issuePath    = "issues/%v.json?include=children"
 	issuesPath   = "issues.json"
 	projectsPath = "projects.json"
 	versionsPath = "projects/%s/versions.json"
@@ -51,7 +52,7 @@ func (b *Broker) GetIssues(projectName string, versionName string, query GetIssu
 
 func (b *Broker) GetIssue(issueID int) (*IssueResponse, error) {
 	var result IssueResponse
-	err := b.Client.Get(fmt.Sprintf("issues/%v.json?include=children", issueID), &result)
+	err := b.Client.Get(fmt.Sprintf(issuePath, issueID), &result)
 	return &result, err
 }
 
