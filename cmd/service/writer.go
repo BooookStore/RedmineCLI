@@ -43,7 +43,12 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	w.write("\n")
 	w.write("\n[CHILDREN]\n")
 	if len(issue.Children) != 0 {
-		w.write(strconv.Itoa(issue.Children[0].ID))
+		childrenSection := w.table()
+		childrenSection.SetHeader([]string{"ID", "SUBJECT"})
+		for _, v := range issue.Children {
+			childrenSection.Append([]string{strconv.Itoa(v.ID), v.Subject})
+		}
+		childrenSection.Render()
 	}
 
 	return nil
