@@ -2,7 +2,9 @@ package service
 
 import (
 	"github.com/gosuri/uitable"
+	"github.com/olekukonko/tablewriter"
 	"io"
+	"strconv"
 	"strings"
 )
 
@@ -11,33 +13,41 @@ type Writer struct {
 }
 
 func (w *Writer) PrintIssues(issue ...Issue) error {
-	table := uitable.New()
-	table.MaxColWidth = 500
-	table.AddRow("ID", "SUBJECT", "STATUS", "ASSIGNED")
+	rows := make([][]string, len(issue))
 	for _, v := range issue {
-		table.AddRow(v.ID, v.Subject, v.Status.Name, v.AssignedTo.Name)
+		rows = append(rows, []string{strconv.Itoa(v.ID), v.Subject, v.AssignedTo.Name})
 	}
-	return w.write(table.String())
+
+	table := w.table()
+	table.SetHeader([]string{"ID", "SUBJECT", "ASSIGNED"})
+	table.AppendBulk(rows)
+	table.Render()
+	return nil
 }
 
 func (w *Writer) PrintIssue(issue Issue) error {
-	header := uitable.New()
-	header.AddRow("ID", "SUBJECT", "STATUS", "ASSIGNED")
-	header.AddRow(issue.ID, issue.Subject, issue.Status.Name, issue.AssignedTo.Name)
-	_, err := w.Out.Write([]byte(header.String()))
-	if err != nil {
-		return err
-	}
-	sb := strings.Builder{}
-	sb.WriteString("\n")
-	sb.WriteString("DESCRIPTION\n")
-	sb.WriteString(replaceLineFeedCode(issue.Description))
-	return w.write(sb.String())
+	w.write("[INFO]\n")
+	infoSection := uitable.New()
+	infoSection.AddRow("ID: ", issue.ID)
+	infoSection.AddRow("SUBJECT: ", issue.Subject)
+	infoSection.AddRow("ASSIGNED: ", issue.AssignedTo.Name)
+	w.write(infoSection.String())
+	w.write("\n\n[DESCRIPTION]\n")
+	w.write(replaceLineFeedCode(issue.Description))
+	return nil
 }
 
-func (w *Writer) write(str string) error {
-	_, err := w.Out.Write([]byte(str))
-	return err
+func (w *Writer) table() *tablewriter.Table {
+	table := tablewriter.NewWriter(w.Out)
+	table.SetBorders(tablewriter.Border{Left: true, Right: true, Top: false, Bottom: false})
+	table.SetCenterSeparator("")
+	table.SetColumnSeparator("")
+	return table
+}
+
+//noinspection GoUnhandledErrorResult
+func (w *Writer) write(str string) {
+	w.Out.Write([]byte(str))
 }
 
 func replaceLineFeedCode(str string) string {
