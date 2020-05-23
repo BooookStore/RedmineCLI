@@ -33,6 +33,7 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	infoSection.AddRow("SUBJECT: ", issue.Subject)
 	infoSection.AddRow("ASSIGNED: ", issue.AssignedTo.Name)
 	w.write(infoSection.String())
+
 	w.write("\n\n[DESCRIPTION]\n")
 	w.write(replaceLineFeedCode(issue.Description))
 	return nil
