@@ -25,7 +25,7 @@ func (w *Writer) PrintIssues(issues []Issue) error {
 	return nil
 }
 
-func (w *Writer) PrintIssue(issue Issue) error {
+func (w *Writer) PrintIssue(issue Issue, children []Issue) error {
 	w.write("[INFO]\n")
 	infoSection := uitable.New()
 	infoSection.AddRow("ID: ", issue.ID)
@@ -44,9 +44,9 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	w.write("\n[CHILDREN]\n")
 	if len(issue.Children) != 0 {
 		childrenSection := w.table()
-		childrenSection.SetHeader([]string{"ID", "SUBJECT"})
-		for _, v := range issue.Children {
-			childrenSection.Append([]string{strconv.Itoa(v.ID), v.Subject})
+		childrenSection.SetHeader([]string{"ID", "STATUS", "SUBJECT", "ASSIGNED"})
+		for _, v := range children {
+			childrenSection.Append([]string{strconv.Itoa(v.ID), v.Status.Name, v.Subject, v.AssignedTo.Name})
 		}
 		childrenSection.Render()
 	}
