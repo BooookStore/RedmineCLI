@@ -12,9 +12,9 @@ type Writer struct {
 	Out io.Writer
 }
 
-func (w *Writer) PrintIssues(issue ...Issue) error {
-	rows := make([][]string, len(issue))
-	for _, v := range issue {
+func (w *Writer) PrintIssues(issues []Issue) error {
+	rows := make([][]string, len(issues))
+	for _, v := range issues {
 		rows = append(rows, []string{strconv.Itoa(v.ID), v.Status.Name, v.Subject, v.AssignedTo.Name})
 	}
 
