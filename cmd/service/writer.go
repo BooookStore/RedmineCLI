@@ -17,11 +17,7 @@ func (w *Writer) PrintIssues(issue ...Issue) error {
 	for _, v := range issue {
 		table.AddRow(v.ID, v.Subject, v.Status.Name, v.AssignedTo.Name)
 	}
-	_, err := w.Out.Write([]byte(table.String()))
-	if err != nil {
-		return err
-	}
-	return nil
+	return w.write(table.String())
 }
 
 func (w *Writer) PrintIssue(issue Issue) error {
@@ -36,11 +32,12 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	sb.WriteString("\n")
 	sb.WriteString("DESCRIPTION\n")
 	sb.WriteString(replaceLineFeedCode(issue.Description))
-	_, err = w.Out.Write([]byte(sb.String()))
-	if err != nil {
-		return err
-	}
-	return nil
+	return w.write(sb.String())
+}
+
+func (w *Writer) write(str string) error {
+	_, err := w.Out.Write([]byte(str))
+	return err
 }
 
 func replaceLineFeedCode(str string) string {
