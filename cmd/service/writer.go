@@ -15,11 +15,11 @@ type Writer struct {
 func (w *Writer) PrintIssues(issue ...Issue) error {
 	rows := make([][]string, len(issue))
 	for _, v := range issue {
-		rows = append(rows, []string{strconv.Itoa(v.ID), v.Subject, v.AssignedTo.Name})
+		rows = append(rows, []string{strconv.Itoa(v.ID), v.Status.Name, v.Subject, v.AssignedTo.Name})
 	}
 
 	table := w.table()
-	table.SetHeader([]string{"ID", "SUBJECT", "ASSIGNED"})
+	table.SetHeader([]string{"ID", "STATUS", "SUBJECT", "ASSIGNED"})
 	table.AppendBulk(rows)
 	table.Render()
 	return nil
@@ -29,6 +29,7 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	w.write("[INFO]\n")
 	infoSection := uitable.New()
 	infoSection.AddRow("ID: ", issue.ID)
+	infoSection.AddRow("STATUS: ", issue.Status.Name)
 	infoSection.AddRow("SUBJECT: ", issue.Subject)
 	infoSection.AddRow("ASSIGNED: ", issue.AssignedTo.Name)
 	w.write(infoSection.String())
