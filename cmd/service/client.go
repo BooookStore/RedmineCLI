@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -22,6 +23,7 @@ func (c *RESTClient) Get(path string, result interface{}) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(req.URL.String())
 	resp, err := c.hclient.Do(req)
 	if err != nil {
 		return err

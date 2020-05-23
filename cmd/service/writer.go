@@ -34,8 +34,18 @@ func (w *Writer) PrintIssue(issue Issue) error {
 	infoSection.AddRow("ASSIGNED: ", issue.AssignedTo.Name)
 	w.write(infoSection.String())
 
-	w.write("\n\n[DESCRIPTION]\n")
-	w.write(replaceLineFeedCode(issue.Description))
+	w.write("\n")
+	w.write("\n[DESCRIPTION]")
+	if desc := replaceLineFeedCode(issue.Description); desc != "" {
+		w.write("\n" + desc)
+	}
+
+	w.write("\n")
+	w.write("\n[CHILDREN]\n")
+	if len(issue.Children) != 0 {
+		w.write(strconv.Itoa(issue.Children[0].ID))
+	}
+
 	return nil
 }
 

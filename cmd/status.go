@@ -23,7 +23,7 @@ var statusCmd = &cobra.Command{
 		}
 
 		if issueId != -1 {
-			err = service.PrintIssue(broker, writer, viper.GetString("project"), viper.GetString("sprint"), issueId)
+			err = service.PrintIssue(broker, writer, issueId)
 		} else {
 			err = service.PrintIssues(broker, writer, viper.GetString("project"), viper.GetString("sprint"))
 		}

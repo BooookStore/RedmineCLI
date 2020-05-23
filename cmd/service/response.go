@@ -16,6 +16,10 @@ type IssuesResponse struct {
 	Limit      int     `json:"limit"`
 }
 
+type IssueResponse struct {
+	Issue Issue `json:"issue"`
+}
+
 type Issue struct {
 	ID      int `json:"id"`
 	Project struct {
@@ -59,6 +63,14 @@ type Issue struct {
 	CreatedOn      time.Time `json:"created_on"`
 	UpdatedOn      time.Time `json:"updated_on"`
 	ClosedOn       time.Time `json:"closed_on"`
+	Children       []struct {
+		ID      int `json:"id"`
+		Tracker struct {
+			ID   int    `json:"id"`
+			Name string `json:"name"`
+		} `json:"tracker"`
+		Subject string `json:"subject"`
+	} `json:"children"`
 }
 
 type ProjectsResponse struct {

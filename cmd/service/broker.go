@@ -49,6 +49,12 @@ func (b *Broker) GetIssues(projectName string, versionName string, query GetIssu
 	return &result, err
 }
 
+func (b *Broker) GetIssue(issueID int) (*IssueResponse, error) {
+	var result IssueResponse
+	err := b.Client.Get(fmt.Sprintf("issues/%v.json?include=children", issueID), &result)
+	return &result, err
+}
+
 func (b *Broker) findProjectId(projectName string) (int, error) {
 	var result ProjectsResponse
 	if err := b.Client.Get(projectsPath, &result); err != nil {
